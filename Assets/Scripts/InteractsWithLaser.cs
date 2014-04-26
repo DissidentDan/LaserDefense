@@ -39,8 +39,8 @@ public class InteractsWithLaser : MonoBehaviour {
 	
 	}
 
-	public virtual LaserReaction OnLaserHit(Laser laser) {
-		if (Health > 0) {
+	public virtual LaserReaction OnLaserHit(Laser laser, bool bPreview) {
+		if (!bPreview && Health > 0) {
 			Health--;
 			if (Health <= 0)
 				Die ();

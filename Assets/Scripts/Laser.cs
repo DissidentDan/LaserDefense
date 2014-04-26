@@ -4,7 +4,9 @@ using System.Collections;
 public class Laser : MonoBehaviour {
 
 	public Material LaserMaterial;
+	public Material LaserPreviewMaterial;
 	public float Width = 0.25f;
+	bool bFiring;
 
 	struct LaserSegment
 	{
@@ -28,11 +30,11 @@ public class Laser : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		SegmentCount = 0;
-		if (Input.GetMouseButton (0))
-			Fire ();
+		bFiring = Input.GetMouseButton (0);
+		TraceLaser ();
 	}
 
-	void Fire() {
+	void TraceLaser() {
 		Ray ray = new Ray(transform.position, transform.right);
 
 		bool bContinue = true;
@@ -48,7 +50,7 @@ public class Laser : MonoBehaviour {
 				if (null == dmgCmp)
 					continue;
 
-				var result = dmgCmp.OnLaserHit(this);
+				var result = dmgCmp.OnLaserHit(this, !bFiring);
 
 				switch (result.ResponseType) {
 					case ELaserResponse.Continue:
@@ -94,12 +96,13 @@ public class Laser : MonoBehaviour {
 
 	void DrawLaser(Vector3 origin, Vector3 end)
 	{
-		if (null == LaserMaterial) {
+		Material mat = bFiring ? LaserMaterial : LaserPreviewMaterial;
+		if (null == mat) {
 			Debug.LogError ("You forgot to set a laser material.");
 			return;
 		}
 
-		LaserMaterial.SetPass (0);
+		mat.SetPass (0);
 		
 		Vector3 dir = (end - origin).normalized;
 		Vector3 right = 0.5f * Width * new Vector3 (dir.z, -dir.y, -dir.x).normalized;

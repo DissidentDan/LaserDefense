@@ -12,7 +12,7 @@ public class Mirror : InteractsWithLaser {
 	
 	}
 
-	public override LaserReaction OnLaserHit(Laser laser) {
+	public override LaserReaction OnLaserHit(Laser laser, bool bPreview) {
 		return new LaserReaction(ELaserResponse.Bounce, 0);
 	}
 }
