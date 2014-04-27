@@ -31,6 +31,9 @@ public class AttachmentPoint : MonoBehaviour {
 		if (null != MyMirror)
 			return;
 
+		if (null == PlacementMenu.Buttons)
+			return;
+
 		PlacementMenu.Buttons [0].ScreenPosition = Camera.main.WorldToScreenPoint (transform.position);
 		UIMgr.OpenMenu (PlacementMenu);
 	}

@@ -28,21 +28,18 @@ public class UIManager : MonoBehaviour {
 	
 	}
 
-	public void OpenMenu(MenuDesc menu)
-	{
+	public void OpenMenu(MenuDesc menu) {
 		CurrentMenu = menu;
 	}
 
-	public void OnGUI()
-	{
+	public void OnGUI() {
 		if (null == CurrentMenu.Buttons)
 			return;
 
 		for (int b = 0; b < CurrentMenu.Buttons.Length; b++) {
 			Vector3 center = CurrentMenu.Buttons[b].ScreenPosition;
 			Rect rect = new Rect(center.x - 200, Camera.main.pixelHeight - center.y - 100, 400, 200);
-			if (GUI.Button(rect, CurrentMenu.Buttons[b].Text))
-			{
+			if (GUI.Button(rect, CurrentMenu.Buttons[b].Text)) {
 				if (null != CurrentMenu.Buttons[b].Action)
 					CurrentMenu.Buttons[b].Action();
 				CurrentMenu = new MenuDesc();

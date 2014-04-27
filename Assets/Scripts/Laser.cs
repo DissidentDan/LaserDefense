@@ -10,6 +10,10 @@ public class Laser : MonoBehaviour {
 	public float Width = 0.25f;
 	bool bFiring;
 
+	Vector3 StartingDragAxis;
+	Vector3 DragInitialXAxis;
+	bool bUserRotating;
+
 	class LaserHitComparer : IComparer<RaycastHit>
 	{
 		public Vector3 SortDirection;
@@ -137,5 +141,39 @@ public class Laser : MonoBehaviour {
 		GL.Vertex (end + right);
 
 		GL.End ();
+	}
+
+	void OnMouseDrag(Vector3 dragOffset)
+	{
+		if (bUserRotating)
+		{
+			Vector3 currentAxis = dragOffset.normalized;
+			//float angle = Vector3.Angle(StartingDragAxis, currentAxis);
+			Vector3 startingDragPerp = new Vector3(-StartingDragAxis.y, StartingDragAxis.x, 0);
+			Vector2 dragVector = new Vector2(Vector3.Dot(currentAxis, StartingDragAxis), Vector3.Dot(currentAxis, startingDragPerp)).normalized;
+			float angle = (float)(Math.Atan2(dragVector.y, dragVector.x) * 180 / Math.PI);
+
+			Quaternion rotation = Quaternion.AngleAxis(-angle, new Vector3(0,1,0));
+			Matrix4x4 originalToCurrent = Matrix4x4.TRS(new Vector3(), rotation, new Vector3(1, 1, 1));
+
+			Vector3 newRight = originalToCurrent.MultiplyVector(DragInitialXAxis);
+			newRight.y = 0;
+			newRight.Normalize();
+			Vector3 newForward = new Vector3(-newRight.z, 0, newRight.x);
+			transform.right = newRight;
+			transform.forward = newForward;
+			//transform.up = new Vector3(0, 1, 0);
+		}
+		else
+		{
+			bUserRotating = true;
+			StartingDragAxis = dragOffset.normalized;
+			DragInitialXAxis = transform.right;
+		}
+	}
+
+	void OnMouseUp(Vector3 mouseScreenPos)
+	{
+		bUserRotating = false;
 	}
 }

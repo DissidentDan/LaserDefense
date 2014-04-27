@@ -5,7 +5,8 @@ public enum EMouseEventType
 {
 	OnMouseDown,
 	OnMouseUp,
-	OnMouseClick
+	OnMouseClick,
+	OnMouseDrag
 }
 
 public class InputDelegator : MonoBehaviour {
@@ -13,8 +14,11 @@ public class InputDelegator : MonoBehaviour {
 
 	bool bMouseDown = false;
 	float MouseDownStartTime = 0;
+	Vector3 MouseDownStartPosition;
+	GameObject DragObject;
 
 	const float MouseClickMaxDuration = 0.5f;
+	const float MouseDragMinimumPixels = 20;
 
 	// Use this for initialization
 	void Start () {
@@ -25,16 +29,55 @@ public class InputDelegator : MonoBehaviour {
 		bool wasDown = bMouseDown;
 		bool isDown = Input.GetMouseButton (0);
 		bMouseDown = isDown;
-		if (isDown && !wasDown) {
-			MouseDownStartTime = Time.time;
-			DelegateMouseEvent(EMouseEventType.OnMouseDown);
-			return;
+
+		GameObject touchObject = GetObjectAtMouseLocation ();
+
+		if (Input.GetMouseButton(1))
+		{
+			Debug.Log("right button");
 		}
-		if (!isDown && wasDown) {
-			float downDuration = Time.time - MouseDownStartTime;
-			if (downDuration <= MouseClickMaxDuration)
-				DelegateMouseEvent(EMouseEventType.OnMouseClick);
-			DelegateMouseEvent(EMouseEventType.OnMouseUp);
+
+		if (isDown)
+		{
+			if (wasDown)
+			{
+				if (null == DragObject)
+				{
+					float dist = (Input.mousePosition - MouseDownStartPosition).magnitude;
+					if (dist > MouseDragMinimumPixels)
+					{
+						DragObject = touchObject;
+					}
+				}
+			}
+			else
+			{
+				MouseDownStartTime = Time.time;
+				MouseDownStartPosition = Input.mousePosition;
+				DelegateMouseEvent(touchObject, EMouseEventType.OnMouseDown, Input.mousePosition);
+				return;
+			}
+		}
+		else
+		{
+			if (wasDown)
+			{
+				float downDuration = Time.time - MouseDownStartTime;
+				if (downDuration <= MouseClickMaxDuration)
+					DelegateMouseEvent(touchObject, EMouseEventType.OnMouseClick, Input.mousePosition);
+				DelegateMouseEvent(touchObject, EMouseEventType.OnMouseUp, Input.mousePosition);
+			}
+
+			if (null != DragObject && DragObject != touchObject)
+			{
+				DelegateMouseEvent(DragObject, EMouseEventType.OnMouseUp, Input.mousePosition);
+			}
+			DragObject = null;
+		}
+
+		if (null != DragObject)
+		{
+			DelegateMouseEvent(DragObject, EMouseEventType.OnMouseDrag, Input.mousePosition - MouseDownStartPosition);
 		}
 	}
 
@@ -61,13 +104,11 @@ public class InputDelegator : MonoBehaviour {
 		return closest.transform.parent.gameObject;
 	}
 
-	void DelegateMouseEvent(EMouseEventType mouseEvent) {
-		GameObject closest = GetObjectAtMouseLocation ();
-
-		if (null == closest)
+	void DelegateMouseEvent(GameObject target, EMouseEventType mouseEvent, Vector3 parameter) {
+		if (null == target)
 			return;
 
 		string eventName = mouseEvent.ToString ();
-		closest.SendMessage (eventName, Input.mousePosition, SendMessageOptions.DontRequireReceiver);
+		target.SendMessage (eventName, parameter, SendMessageOptions.DontRequireReceiver);
 	}
 }
