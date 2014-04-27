@@ -5,6 +5,8 @@ Project("{6BE2CC6B-213C-13A1-EDF6-D0F20EFFA2DA}") = "LaserDefense", "Assembly-CS
 EndProject
 Project("{6BE2CC6B-213C-13A1-EDF6-D0F20EFFA2DA}") = "LaserDefense", "Assembly-CSharp.csproj", "{DFF9C950-CCED-4356-4377-DEEC5359E124}"
 EndProject
+Project("{6BE2CC6B-213C-13A1-EDF6-D0F20EFFA2DA}") = "LaserDefense", "Assembly-CSharp-Editor.csproj", "{3D7F6FAC-7E2E-7734-504B-5365B54D99F8}"
+EndProject
 Project("{6BE2CC6B-213C-13A1-EDF6-D0F20EFFA2DA}") = "LaserDefense", "Assembly-UnityScript-firstpass.unityproj", "{D497B6A3-D365-3FFD-CA76-960904A29941}"
 EndProject
 Project("{6BE2CC6B-213C-13A1-EDF6-D0F20EFFA2DA}") = "LaserDefense", "Assembly-UnityScript.unityproj", "{6BED8DDB-0C71-5BAA-8FB8-ED9B2DEB0F03}"
@@ -23,6 +25,10 @@ Global
 		{DFF9C950-CCED-4356-4377-DEEC5359E124}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DFF9C950-CCED-4356-4377-DEEC5359E124}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DFF9C950-CCED-4356-4377-DEEC5359E124}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D7F6FAC-7E2E-7734-504B-5365B54D99F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D7F6FAC-7E2E-7734-504B-5365B54D99F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D7F6FAC-7E2E-7734-504B-5365B54D99F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D7F6FAC-7E2E-7734-504B-5365B54D99F8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D497B6A3-D365-3FFD-CA76-960904A29941}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D497B6A3-D365-3FFD-CA76-960904A29941}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D497B6A3-D365-3FFD-CA76-960904A29941}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -35,7 +41,7 @@ Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-																	GlobalSection(MonoDevelopProperties) = preSolution
+																							GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Assembly-CSharp.csproj
 		Policies = $0
 		$0.TextStylePolicy = $1
