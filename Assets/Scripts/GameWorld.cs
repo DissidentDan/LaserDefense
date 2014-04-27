@@ -4,22 +4,26 @@ using System.Collections.Generic;
 
 public class GameWorld : MonoBehaviour {
 
-	public List<Mirror> Mirrors = new List<Mirror>();
-	public List<InteractsWithLaser> DamageableObjects = new List<InteractsWithLaser>();
+	public List<Mirror> Mirrors { get; set; }
+	public List<InteractsWithLaser> DamageableObjects { get; set; }
+
+	public GameObject MirrorPrefab;
 
 	// Use this for initialization
 	void Start () {
+		Mirrors = new List<Mirror>();
+		DamageableObjects = new List<InteractsWithLaser> ();
+
 		FindAllOfType<Mirror> (Mirrors);
+		FindAllOfType<InteractsWithLaser> (DamageableObjects);
 	}
 
 	void FindAllOfType<T>(List<T> outList) where T : Component
 	{
 		outList.Clear ();
 		object[] sceneObjects = GameObject.FindObjectsOfType (typeof(T));
-		foreach (GameObject obj in sceneObjects) {
-			T found = obj.GetComponent<T>();
-			if (null != found)
-				outList.Add (found);
+		foreach (T found in sceneObjects) {
+			outList.Add (found);
 		}
 	}
 	

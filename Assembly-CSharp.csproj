@@ -46,11 +46,14 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\AttachmentPoint.cs" />
      <Compile Include="Assets\Scripts\CamMovement.cs" />
      <Compile Include="Assets\Scripts\GameWorld.cs" />
+     <Compile Include="Assets\Scripts\InputDelegator.cs" />
      <Compile Include="Assets\Scripts\InteractsWithLaser.cs" />
      <Compile Include="Assets\Scripts\Laser.cs" />
      <Compile Include="Assets\Scripts\Mirror.cs" />
+     <Compile Include="Assets\Scripts\UIManager.cs" />
      <None Include="Assets\Standard Assets (Mobile)\Shaders\Particle Shaders\Mobile Multiply Culled.shader" />
      <None Include="Assets\Standard Assets\Toon Shading\Sources\Shaders\Toony-Basic.shader" />
      <None Include="Assets\Standard Assets (Mobile)\Shaders\Miscellaneous Shaders\Mobile Background.shader" />
