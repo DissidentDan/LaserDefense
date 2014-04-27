@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Laser : MonoBehaviour {
 
@@ -7,6 +9,22 @@ public class Laser : MonoBehaviour {
 	public Material LaserPreviewMaterial;
 	public float Width = 0.25f;
 	bool bFiring;
+
+	class LaserHitComparer : IComparer<RaycastHit>
+	{
+		public Vector3 SortDirection;
+
+		public int Compare(RaycastHit a, RaycastHit b)
+		{
+			float da = Vector3.Dot(SortDirection, a.point);
+			float db = Vector3.Dot(SortDirection, b.point);
+			if (da > db)
+				return 1;
+			return -1;
+		}
+	}
+
+	LaserHitComparer HitComparer = new LaserHitComparer ();
 
 	struct LaserSegment
 	{
@@ -42,6 +60,9 @@ public class Laser : MonoBehaviour {
 			bContinue = false;
 
 			RaycastHit[] hits = Physics.RaycastAll(ray);
+
+			HitComparer.SortDirection = ray.direction;
+			Array.Sort(hits, HitComparer);
 
 			bool bLaserDrawn = false;
 			bool bStopHits = false;
